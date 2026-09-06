@@ -7,6 +7,7 @@
 installation
 api
 examples
+changelog
 ```
 
 ## Overview
