@@ -12,7 +12,7 @@ pip install html5cc
 ## requirements.txt
 
 ```text
-html5cc==0.3.0
+html5cc==0.4.0
 ```
 
 ## pyproject.toml
@@ -21,7 +21,7 @@ html5cc==0.3.0
 
 ```toml
 [project]
-dependencies = ["html5cc>=0.3.0"]
+dependencies = ["html5cc>=0.4.0"]
 ```
 
 Then run:
@@ -35,7 +35,7 @@ uv sync
 ```toml
 [tool.poetry.dependencies]
 python = "^3.10"
-html5cc = "^0.3.0"
+html5cc = "^0.4.0"
 ```
 
 Then run:
@@ -48,5 +48,5 @@ poetry install
 
 ```python
 import html5
-print(html5.__version__)  # 0.3.0
+print(html5.__version__)  # 0.4.0
 ```

@@ -18,14 +18,14 @@ pip install html5cc
 **requirements.txt**
 
 ```text
-html5cc==0.3.0
+html5cc==0.4.0
 ```
 
 **pyproject.toml (uv)**
 
 ```toml
 [project]
-dependencies = ["html5cc>=0.3.0"]
+dependencies = ["html5cc>=0.4.0"]
 ```
 
 See the [Installation docs](https://jasonmiller-cc.github.io/html5/installation.html) for Poetry and other options.
@@ -115,8 +115,9 @@ Google Fonts examples:
 - `src/html5/css.py` contains CSS node classes for comments, declarations, rules, at-rules, keyframes, inline styles, and `<style>` generation.
 - `src/html5/js.py` contains JavaScript helpers for inline scripts, external scripts, Bootstrap 5, and Google Charts.
 - `src/html5/writer.py` contains a disk writer for rendered HTML and CSS outputs.
+- `src/html5/loader.py` contains `html_loader` and `css_loader` for reading HTML/CSS files back into document objects.
 - `src/html5/version.py` stores the semantic version string used by packaging.
 
 ## Versioning
 
-This project uses semantic versioning. The current package version is `0.3.0`, and the release history is documented in [CHANGELOG.md](CHANGELOG.md).
+This project uses semantic versioning. The current package version is `0.4.0`, and the release history is documented in [CHANGELOG.md](CHANGELOG.md).
