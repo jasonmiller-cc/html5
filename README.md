@@ -8,23 +8,24 @@ The package ships with HTML5 element classes, CSS node classes, JavaScript helpe
 
 ## Installation
 
-`html5` is published to [PyPI](https://pypi.org/project/html5/).
+`html5cc` is published to [PyPI](https://pypi.org/project/html5cc/).
+The import name is still `html5`.
 
 ```bash
-pip install html5
+pip install html5cc
 ```
 
 **requirements.txt**
 
 ```text
-html5==0.3.0
+html5cc==0.3.0
 ```
 
 **pyproject.toml (uv)**
 
 ```toml
 [project]
-dependencies = ["html5>=0.3.0"]
+dependencies = ["html5cc>=0.3.0"]
 ```
 
 See the [Installation docs](https://jasonmiller-cc.github.io/html5/installation.html) for Poetry and other options.

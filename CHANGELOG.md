@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-09-06
+
+- Renamed PyPI distribution from `html5` (taken) to `html5cc`. Import name is unchanged: `import html5`.
+
 ## [0.3.0] - 2026-09-05
 
 - Fixed `style_tag()` isinstance check order to prevent double-wrapping of `CSSStyleElement`.

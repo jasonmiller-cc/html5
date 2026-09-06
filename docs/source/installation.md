@@ -1,17 +1,18 @@
 # Installation
 
-`html5` is published to [PyPI](https://pypi.org/project/html5/).
+`html5cc` is published to [PyPI](https://pypi.org/project/html5cc/).
+The import name is `html5`.
 
 ## pip
 
 ```bash
-pip install html5
+pip install html5cc
 ```
 
 ## requirements.txt
 
 ```text
-html5==0.3.0
+html5cc==0.3.0
 ```
 
 ## pyproject.toml
@@ -20,7 +21,7 @@ html5==0.3.0
 
 ```toml
 [project]
-dependencies = ["html5>=0.3.0"]
+dependencies = ["html5cc>=0.3.0"]
 ```
 
 Then run:
@@ -34,7 +35,7 @@ uv sync
 ```toml
 [tool.poetry.dependencies]
 python = "^3.10"
-html5 = "^0.3.0"
+html5cc = "^0.3.0"
 ```
 
 Then run:
