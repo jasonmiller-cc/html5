@@ -39,7 +39,12 @@ jobs:
           path: dist/
 
       - name: Publish to GitHub Packages
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://pypi.pkg.github.com/jasonmiller-cc/
-          password: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m pip install --upgrade twine
+          twine upload \
+            --repository-url https://pypi.pkg.github.com/jasonmiller-cc/ \
+            --username "${{ github.actor }}" \
+            --password "$GITHUB_TOKEN" \
+            dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
