@@ -8,18 +8,15 @@ The package ships with HTML5 element classes, CSS node classes, JavaScript helpe
 
 ## Installation
 
-`html5` is published to [GitHub Packages](https://github.com/jasonmiller-cc/html5/packages).
-A GitHub token with `read:packages` scope is required.
+`html5` is published to [PyPI](https://pypi.org/project/html5/).
 
 ```bash
-pip install html5 \
-  --extra-index-url https://<your-github-username>:<your-token>@pypi.pkg.github.com/jasonmiller-cc/
+pip install html5
 ```
 
 **requirements.txt**
 
 ```text
---extra-index-url https://<your-github-username>:<your-token>@pypi.pkg.github.com/jasonmiller-cc/
 html5==0.3.0
 ```
 
@@ -28,13 +25,9 @@ html5==0.3.0
 ```toml
 [project]
 dependencies = ["html5>=0.3.0"]
-
-[[tool.uv.index]]
-name = "github-html5"
-url = "https://pypi.pkg.github.com/jasonmiller-cc/"
 ```
 
-See the [Installation docs](https://jasonmiller-cc.github.io/html5/installation.html) for Poetry, CI setup, and token configuration details.
+See the [Installation docs](https://jasonmiller-cc.github.io/html5/installation.html) for Poetry and other options.
 
 ## Example
 
@@ -125,4 +118,4 @@ Google Fonts examples:
 
 ## Versioning
 
-This project uses semantic versioning. The current package version is `0.2.0`, and the release history is documented in [CHANGELOG.md](CHANGELOG.md).
+This project uses semantic versioning. The current package version is `0.3.0`, and the release history is documented in [CHANGELOG.md](CHANGELOG.md).
