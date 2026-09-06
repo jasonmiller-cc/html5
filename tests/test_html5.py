@@ -6,6 +6,7 @@ import pytest
 
 from html5 import (
     CSSAtRule,
+    CSSCustomProperties,
     CSSDeclaration,
     CSSKeyframe,
     CSSLayerRule,
@@ -22,10 +23,13 @@ from html5 import (
     __version__,
     bootstrap5_bundle_script,
     bootstrap5_stylesheet,
+    css_loader,
+    css_var,
     google_fonts_assets,
     google_fonts_url,
     google_charts_loader,
     google_charts_package_loader,
+    html_loader,
     javascript_link,
     javascript_script,
     inline_style,
@@ -35,7 +39,7 @@ from html5 import (
 
 
 def test_version_uses_semver() -> None:
-    assert __version__ == "0.3.0"
+    assert __version__ == "0.4.0"
     assert __version__.count(".") == 2
 
 
@@ -246,3 +250,139 @@ def test_markup_writer_rejects_dotdot_traversal(tmp_path: Path) -> None:
 def test_void_html_elements_reject_children() -> None:
     with pytest.raises(ValueError):
         Img("unexpected child", src="hero.png")
+
+
+# ---------------------------------------------------------------------------
+# CSS custom properties
+# ---------------------------------------------------------------------------
+
+def test_css_custom_properties_renders_root_block() -> None:
+    props = CSSCustomProperties({"--size-1": "0.25rem", "--size-2": "0.5rem"})
+    rendered = props.render()
+    assert rendered.startswith(":root {")
+    assert "--size-1: 0.25rem;" in rendered
+    assert "--size-2: 0.5rem;" in rendered
+
+
+def test_css_custom_properties_custom_selector() -> None:
+    props = CSSCustomProperties({"--accent": "#005fcc"}, selector=".theme-dark")
+    rendered = props.render()
+    assert rendered.startswith(".theme-dark {")
+    assert "--accent: #005fcc;" in rendered
+
+
+def test_css_custom_properties_empty_renders_empty_block() -> None:
+    rendered = CSSCustomProperties({}).render()
+    assert rendered == ":root {}"
+
+
+def test_css_var_returns_var_reference() -> None:
+    assert css_var("--size-1") == "var(--size-1)"
+    assert css_var("--color-brand") == "var(--color-brand)"
+
+
+def test_stylesheet_add_custom_properties() -> None:
+    sheet = (
+        CSSStyleSheet()
+        .add_custom_properties({"--gap": "1rem", "--radius": "4px"})
+        .add_rule("button", ("border_radius", css_var("--radius")))
+    )
+    rendered = sheet.render()
+    assert ":root { --gap: 1rem; --radius: 4px; }" in rendered
+    assert "border-radius: var(--radius);" in rendered
+
+
+def test_stylesheet_add_custom_properties_custom_selector() -> None:
+    sheet = CSSStyleSheet().add_custom_properties(
+        {"--fg": "#fff"}, selector="[data-theme='dark']"
+    )
+    rendered = sheet.render()
+    assert "[data-theme='dark'] { --fg: #fff; }" in rendered
+
+
+def test_css_declaration_custom_property_passthrough() -> None:
+    decl = CSSDeclaration("--my-color", "red")
+    assert decl.render() == "--my-color: red;"
+
+
+# ---------------------------------------------------------------------------
+# html_loader / css_loader
+# ---------------------------------------------------------------------------
+
+def test_css_loader_reads_file(tmp_path: Path) -> None:
+    css_file = tmp_path / "styles.css"
+    css_file.write_text("body { margin: 0; }\nh1 { font-size: 2rem; }", encoding="utf-8")
+    sheet = css_loader(css_file)
+    rendered = sheet.render()
+    assert "body { margin: 0; }" in rendered
+    assert "h1 { font-size: 2rem; }" in rendered
+
+
+def test_css_loader_returns_stylesheet_instance(tmp_path: Path) -> None:
+    css_file = tmp_path / "x.css"
+    css_file.write_text("p { color: blue; }", encoding="utf-8")
+    assert isinstance(css_loader(css_file), CSSStyleSheet)
+
+
+def test_html_loader_reads_title_and_lang(tmp_path: Path) -> None:
+    html_file = tmp_path / "index.html"
+    html_file.write_text(
+        '<!doctype html>\n<html lang="fr"><head><meta charset="utf-8">'
+        "<title>Bonjour</title></head><body><p>Texte</p></body></html>",
+        encoding="utf-8",
+    )
+    doc = html_loader(html_file)
+    assert doc.title == "Bonjour"
+    assert doc.lang == "fr"
+
+
+def test_html_loader_body_content_preserved(tmp_path: Path) -> None:
+    html_file = tmp_path / "page.html"
+    html_file.write_text(
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        "<title>Test</title></head><body><div><h1>Hello</h1></div></body></html>",
+        encoding="utf-8",
+    )
+    doc = html_loader(html_file)
+    rendered = doc.render()
+    assert "<h1>Hello</h1>" in rendered
+    assert "<div>" in rendered
+
+
+def test_html_loader_strips_charset_meta(tmp_path: Path) -> None:
+    html_file = tmp_path / "page.html"
+    html_file.write_text(
+        '<!doctype html><html><head><meta charset="utf-8"><title>X</title>'
+        "</head><body></body></html>",
+        encoding="utf-8",
+    )
+    doc = html_loader(html_file)
+    rendered = doc.render()
+    assert rendered.count('charset="utf-8"') == 1
+
+
+def test_html_loader_returns_html_document(tmp_path: Path) -> None:
+    html_file = tmp_path / "page.html"
+    html_file.write_text(
+        "<!doctype html><html><head><meta charset=\"utf-8\"><title>Hi</title>"
+        "</head><body></body></html>",
+        encoding="utf-8",
+    )
+    assert isinstance(html_loader(html_file), HtmlDocument)
+
+
+def test_html_loader_roundtrip(tmp_path: Path) -> None:
+    sheet = CSSStyleSheet().add_custom_properties({"--size-1": "0.25rem"})
+    original = (
+        HtmlDocument(title="Round Trip", lang="en")
+        .add_head(style_tag(sheet))
+        .add_body(Div(H1("Hello")))
+    )
+    writer = MarkupWriter(root=tmp_path)
+    html_path = writer.write_html("page.html", original)
+    doc = html_loader(html_path)
+    assert doc.title == "Round Trip"
+    assert doc.lang == "en"
+    rendered = doc.render()
+    assert "--size-1: 0.25rem;" in rendered
+    assert "Hello" in rendered

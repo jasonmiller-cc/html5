@@ -50,6 +50,38 @@ class CSSDeclaration(CSSNode):
         return f"{_normalize_property_name(self.property_name)}: {self.value}{suffix};"
 
 
+def css_var(name: str) -> str:
+    """Return a CSS var() reference for a custom property.
+
+    Example: ``css_var("--size-1")`` → ``"var(--size-1)"``
+    """
+    return f"var({name})"
+
+
+@dataclass(frozen=True, init=False)
+class CSSCustomProperties(CSSNode):
+    """Render a block of CSS custom properties (variables) on a selector.
+
+    Pass a plain ``dict`` mapping ``--name`` strings to values.  The selector
+    defaults to ``:root`` so the variables are available document-wide::
+
+        CSSCustomProperties({"--size-1": "0.25rem", "--color-brand": "#005fcc"})
+    """
+
+    selector: str
+    properties: tuple[tuple[str, Any], ...]
+
+    def __init__(self, props: Mapping[str, Any], selector: str = ":root") -> None:
+        object.__setattr__(self, "selector", selector)
+        object.__setattr__(self, "properties", tuple(props.items()))
+
+    def render(self) -> str:
+        if not self.properties:
+            return f"{self.selector} {{}}"
+        declarations = " ".join(f"{name}: {value};" for name, value in self.properties)
+        return f"{self.selector} {{ {declarations} }}"
+
+
 def _coerce_declaration(value: CSSDeclaration | tuple[str, Any] | Mapping[str, Any]) -> CSSDeclaration:
     if isinstance(value, CSSDeclaration):
         return value
@@ -322,6 +354,14 @@ class CSSStyleSheet(CSSNode):
         self.rules.append(CSSKeyframesRule(name=name, frames=frames))
         return self
 
+    def add_custom_properties(
+        self,
+        props: Mapping[str, Any],
+        selector: str = ":root",
+    ) -> "CSSStyleSheet":
+        self.rules.append(CSSCustomProperties(props, selector=selector))
+        return self
+
     def add_raw(self, css: str) -> "CSSStyleSheet":
         self.rules.append(css)
         return self
@@ -358,6 +398,7 @@ def inline_style(
 __all__ = [
     "CSSAtRule",
     "CSSComment",
+    "CSSCustomProperties",
     "CSSDeclaration",
     "CSSLink",
     "CSSImportRule",
@@ -376,6 +417,7 @@ __all__ = [
     "GOOGLE_FONTS_STATIC_URL",
     "TAILWIND_PLAY_CDN_URL",
     "bootstrap5_stylesheet",
+    "css_var",
     "google_fonts_assets",
     "google_fonts_url",
     "inline_style",

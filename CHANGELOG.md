@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-09-05
+
+- Added `CSSCustomProperties` node for CSS custom property (variable) blocks on any selector (defaults to `:root`).
+- Added `css_var(name)` helper returning `var(--name)` references.
+- Added `CSSStyleSheet.add_custom_properties(props, selector=":root")` convenience method.
+- Added `html_loader(path)` — reads an HTML file and returns an `HtmlDocument`.
+- Added `css_loader(path)` — reads a CSS file and returns a `CSSStyleSheet`.
+
 ## [0.3.0] - 2026-09-06
 
 - Renamed PyPI distribution from `html5` (taken) to `html5cc`. Import name is unchanged: `import html5`.

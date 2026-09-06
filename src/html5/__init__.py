@@ -3,6 +3,7 @@
 from .css import (
     CSSAtRule,
     CSSComment,
+    CSSCustomProperties,
     CSSDeclaration,
     CSSLink,
     CSSImportRule,
@@ -21,12 +22,14 @@ from .css import (
     GOOGLE_FONTS_STATIC_URL,
     TAILWIND_PLAY_CDN_URL,
     bootstrap5_stylesheet,
+    css_var,
     google_fonts_assets,
     google_fonts_url,
     inline_style,
     tailwind_script,
     style_tag,
 )
+from .loader import css_loader, html_loader
 from .document import Comment, Doctype, Element, HtmlDocument, Node, Raw, Text, comment, doctype, doctype_node, element, raw, text
 from .elements import *
 from .version import __version__
