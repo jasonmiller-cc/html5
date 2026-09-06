@@ -4,19 +4,42 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "html5cc"
-description = "A small Python module for building HTML5 documents and CSS3 stylesheets."
+description = "A Python toolkit for building HTML5 documents, CSS3 stylesheets, and JavaScript assets programmatically."
 readme = "README.md"
 requires-python = ">=3.10"
 dynamic = ["version"]
 license = { text = "MIT" }
 authors = [
-  { name = "Jason Miller" }
+  { name = "Jason Miller", email = "jason.miller@thoughtparameters.com" }
+]
+keywords = [
+  "html",
+  "html5",
+  "css",
+  "css3",
+  "web",
+  "template",
+  "markup",
+  "stylesheet",
+  "document",
+  "builder",
 ]
 classifiers = [
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3 :: Only",
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Text Processing :: Markup :: HTML",
+  "Typing :: Typed",
 ]
 
 [project.urls]
@@ -24,6 +47,7 @@ Homepage = "https://jasonmiller-cc.github.io/html5/"
 Documentation = "https://jasonmiller-cc.github.io/html5/"
 Source = "https://github.com/jasonmiller-cc/html5"
 Changelog = "https://github.com/jasonmiller-cc/html5/blob/main/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/jasonmiller-cc/html5/issues"
 
 [project.optional-dependencies]
 test = [
@@ -34,6 +58,7 @@ docs = [
   "furo>=2024.8.6",
   "myst-parser>=4.0",
   "sphinx>=7.4",
+  "sphinx-autodoc-typehints>=2.0",
 ]
 
 [tool.setuptools]
@@ -44,6 +69,9 @@ version = {attr = "html5.version.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+html5 = ["py.typed"]
 
 [tool.pytest.ini_options]
 addopts = "-q --cov=html5 --cov-report=term-missing --cov-fail-under=80"
