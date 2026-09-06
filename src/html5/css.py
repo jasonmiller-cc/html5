@@ -334,11 +334,15 @@ class CSSStyleSheet(CSSNode):
 
 
 def style_tag(stylesheet: CSSNode | str) -> Raw:
-    """Render a stylesheet or CSS node into a raw <style> tag."""
+    """Render a stylesheet or CSS node into a raw <style> tag.
 
-    css = stylesheet.render() if isinstance(stylesheet, CSSNode) else stylesheet
+    If *stylesheet* is already a :class:`CSSStyleElement` (which renders its
+    own ``<style>`` wrapper), return it as-is to avoid double-wrapping.
+    """
+
     if isinstance(stylesheet, CSSStyleElement):
         return raw(stylesheet.render())
+    css = stylesheet.render() if isinstance(stylesheet, CSSNode) else stylesheet
     return raw(f"<style>{css}</style>")
 
 
@@ -367,6 +371,7 @@ __all__ = [
     "CSSStyleElement",
     "CSSStyleSheet",
     "CSSSupportsRule",
+    "BOOTSTRAP5_CSS_URL",
     "GOOGLE_FONTS_PRECONNECT_URL",
     "GOOGLE_FONTS_STATIC_URL",
     "TAILWIND_PLAY_CDN_URL",

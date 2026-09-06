@@ -6,6 +6,36 @@ Documentation is published on GitHub Pages at [jasonmiller-cc.github.io/html5](h
 
 The package ships with HTML5 element classes, CSS node classes, JavaScript helpers, CDN helpers for Bootstrap 5 and Tailwind, optimized Google Fonts helpers, a disk writer, and semantic version metadata.
 
+## Installation
+
+`html5` is published to [GitHub Packages](https://github.com/jasonmiller-cc/html5/packages).
+A GitHub token with `read:packages` scope is required.
+
+```bash
+pip install html5 \
+  --extra-index-url https://<your-github-username>:<your-token>@pypi.pkg.github.com/jasonmiller-cc/
+```
+
+**requirements.txt**
+
+```text
+--extra-index-url https://<your-github-username>:<your-token>@pypi.pkg.github.com/jasonmiller-cc/
+html5==0.3.0
+```
+
+**pyproject.toml (uv)**
+
+```toml
+[project]
+dependencies = ["html5>=0.3.0"]
+
+[[tool.uv.index]]
+name = "github-html5"
+url = "https://pypi.pkg.github.com/jasonmiller-cc/"
+```
+
+See the [Installation docs](https://jasonmiller-cc.github.io/html5/installation.html) for Poetry, CI setup, and token configuration details.
+
 ## Example
 
 ```python

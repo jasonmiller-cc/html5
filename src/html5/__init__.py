@@ -32,7 +32,6 @@ from .elements import *
 from .version import __version__
 from .writer import MarkupWriter
 from .js import (
-    JSLink,
     JSNode,
     JSScript,
     bootstrap5_bundle_script,

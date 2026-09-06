@@ -28,8 +28,8 @@ class MarkupWriter:
             raise ValueError("path must be relative to the writer root")
 
         destination = (root / relative_path).resolve()
-        if destination != root and root not in destination.parents:
-            raise ValueError("path escapes the writer root")
+        if destination == root or root not in destination.parents:
+            raise ValueError("path must be a file inside the writer root, not the root itself")
 
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(content, encoding=self.encoding)
